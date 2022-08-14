@@ -1,23 +1,24 @@
 package com.shahian.springbootaop.Aop;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
-@Aspect
+@org.aspectj.lang.annotation.Aspect
 @Component
-public class InvoiceAspect {
-    @Pointcut("execution(public void com.shahian.springbootaop.Service.InvoiceBusinessService.saveInvoice())")
+public class Aspect {
+        @Pointcut("execution(public void com.shahian.springbootaop.Service.BusinessService.saveEmployee())")
     public void p1(){
 
     }
-    @Pointcut("execution(public String com.shahian.springbootaop.Service.InvoiceBusinessService.helloInvoice())")
+    @Pointcut("execution(public String com.shahian.springbootaop.Service.BusinessService.helloEmployye())")
     public void p2() {
 
     }
 
 
-    @Pointcut("execution(* com.shahian.springbootaop.Service.InvoiceBusinessService.testMethodforAroundAdvice())")
+    @Pointcut("execution(* com.shahian.springbootaop.Service.BusinessService.testMethodforAroundAdvice())")
     public void p4() {
 
     }
@@ -61,5 +62,18 @@ public class InvoiceAspect {
         pj.proceed();  // this code will call business method
 
         System.out.println("Executing After part of business method");
+    }
+    @Before(value = "execution(* com.shahian.springbootaop.Service.BusinessService.*(..)) and args(name,empId)")
+    public void beforeAdvice(JoinPoint joinPoint, String name, String empId) {
+        System.out.println("Before method:" + joinPoint.getSignature());
+
+        System.out.println("Creating Employee with name - " + name + " and id - " + empId);
+    }
+
+    @After(value = "execution(* com.shahian.springbootaop.Service.BusinessService.*(..)) and args(name,empId)")
+    public void afterAdvice(JoinPoint joinPoint, String name, String empId) {
+        System.out.println("After method:" + joinPoint.getSignature());
+
+        System.out.println("Successfully created Employee with name - " + name + " and id - " + empId);
     }
 }
